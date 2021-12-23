@@ -6,10 +6,6 @@ const CountriesSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    visited: {
-        type: Boolean,
-        required: true,
-    },
     timesVisited: {
         type: Number,
         required: false,
@@ -17,7 +13,6 @@ const CountriesSchema = new mongoose.Schema({
 });
 
 // connect schema to DB
-
 const Country = mongoose.model('countries', CountriesSchema);
 
 // export schema for global access
