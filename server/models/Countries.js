@@ -1,17 +1,24 @@
 const mongoose = require('mongoose');
 
-// create Schema
-const countriesSchema = new mongoose.Schema({
-    country: {
-        name: String,
-        continent: String,
-        visited: Boolean,
-        required: true
-    }
-})
+// create schema
+const CountriesSchema = new mongoose.Schema({
+    countryName: {
+        type: String,
+        required: true,
+    },
+    visited: {
+        type: Boolean,
+        required: true,
+    },
+    timesVisited: {
+        type: Number,
+        required: false,
+    },
+});
 
-// connect Schema to DB
-const Countries = mongoose.model('countries', countriesSchema);
+// connect schema to DB
 
-// export Schema for global access
-module.exports = Countries;
+const Country = mongoose.model('countries', CountriesSchema);
+
+// export schema for global access
+module.exports = Country;
