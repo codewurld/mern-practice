@@ -1,12 +1,21 @@
 import "./App.css"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Axios from 'axios';
+import e from "cors";
 
 function App() {
 
   // set initial states
   const [countryName, setCountryName] = useState("");
   const [timesVisited, setTimesVisited] = useState(0);
+  const [countryList, setCountryList] = useState([])
+
+  // display data on the front end once whenever page is rendered
+  useEffect(() => {
+    Axios.get("http://localhost:8089/display").then((response) => {
+      setCountryList(response.data)
+    })
+  }, [])
 
   // connect with backend
   // onClick - fulfil http request
@@ -34,6 +43,25 @@ function App() {
         setTimesVisited(e.target.value)
       }} />
       <button onClick={handleClickAddToList}>Add to Country List</button>
+
+      <hr />
+
+      {/* display countryList */}
+      <h1>Country List</h1>
+
+      {countryList.map((val, key) => {
+        return (
+
+          <div key={key}>
+            <ul>
+              <li>{val.countryName}</li>
+              <li>{val.timesVisited}</li>
+            </ul>
+          </div>
+
+        )
+      })}
+
     </div>
   );
 }
