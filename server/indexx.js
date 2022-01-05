@@ -17,7 +17,7 @@ mongoose.connect("mongodb://sholaqq:mongotest@test-for-mongo-shard-00-00.s1ugo.m
 // add to DB
 app.post("/addvisit", async (req, res) => {
 
-    // get dynamic access to objects from front end:
+    // get dynamic access to objects from front end passed through axios:
     // then pass dynamically into new CountryModel
 
     const countryName = req.body.countryName;
@@ -35,6 +35,21 @@ app.post("/addvisit", async (req, res) => {
         console.log(err);
     }
 })
+
+// display information from DB
+app.get("/display", async (req, res) => {
+
+    // empty object gets all results
+    // to specify result => {$where: {countryName: "The Netherlands"}
+    CountryModel.find({}, (err, result) => {
+        if (err) {
+            res.send(err)
+        }
+        // if no error display data
+        res.send(result);
+    })
+
+});
 
 
 app.listen(PORT, () => {
