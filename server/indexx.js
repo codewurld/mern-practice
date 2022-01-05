@@ -52,6 +52,37 @@ app.get("/display", async (req, res) => {
 });
 
 
+// update post
+app.put("/update", async (req, res) => {
+
+    // get dynamic access to objects from front end passed through axios:
+    // then pass dynamically into new CountryModel
+
+    const newCountryName = req.body.newCountryName;
+    const id = req.body.id;
+
+    // find specific country by its id and change the country name to the newCountryName
+    try {
+        await CountryModel.findById(id, (err, updatedCountry) => {
+            updatedCountry.countryName = newCountryName;
+            updatedCountry.save();
+            res.send("data updated")
+        });
+    } catch (err) {
+        console.log(err);
+    }
+})
+
+app.delete("/delete/:id", async (req, res) => {
+    // id is derived from parameters in our request
+    const id = req.params.id;
+
+    // findById --> mongoose methods
+    await CountryModel.findByIdAndRemove(id).exec();
+    res.send("Country Deleted");
+})
+
+
 app.listen(PORT, () => {
     console.log(`Server now running on PORT ${PORT}`)
 })

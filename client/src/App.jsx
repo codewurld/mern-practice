@@ -8,9 +8,10 @@ function App() {
   // set initial states
   const [countryName, setCountryName] = useState("");
   const [timesVisited, setTimesVisited] = useState(0);
+  const [newCountryName, setNewCountryName] = useState("");
   const [countryList, setCountryList] = useState([])
 
-  // display data on the front end once whenever page is rendered
+  // display data with list of all countries on the front end once whenever page is rendered
   useEffect(() => {
     Axios.get("http://localhost:8089/display").then((response) => {
       setCountryList(response.data)
@@ -26,6 +27,24 @@ function App() {
       countryName: countryName,
       timesVisited: timesVisited
     })
+  }
+
+  // function to update entry on click
+  // update to happen depending on value of id called
+  const handleUpdateCountryClick = (id) => {
+    Axios.put("http://localhost:8089/update", {
+      id: id,
+      newCountryName: newCountryName
+    })
+
+  }
+
+  // function to delete item based on id
+  const handleDeleteCountryClick = (id) => {
+    Axios.delete(`http://localhost:8089/delete/${id}`, {
+
+    })
+
   }
 
   return (
@@ -52,11 +71,17 @@ function App() {
       {countryList.map((val, key) => {
         return (
 
-          <div key={key}>
-            <ul>
-              <li>{val.countryName}</li>
-              <li>{val.timesVisited}</li>
-            </ul>
+          <div key={key} className="lists">
+
+            <h2>Country Name: {val.countryName}</h2>
+            <p>Times Visited: {val.timesVisited}</p>
+            <input type="text" placeholder="new country name" onChange={(e) => {
+              e.preventDefault();
+              setNewCountryName(e.target.value)
+            }} />
+            {/* get _id as stored in DB from value in countryList */}
+            <button onClick={() => handleUpdateCountryClick(val._id)}>UPDATE</button>
+            <button onClick={() => handleDeleteCountryClick(val._id)}>DELETE</button>
           </div>
 
         )
